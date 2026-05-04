@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "openclaw": {
+      "type": "stdio",
+      "command": "openclaw",
+      "args": ["mcp", "serve"]
+    }
+  }
+}
