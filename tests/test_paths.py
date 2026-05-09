@@ -2,10 +2,10 @@ import os
 import pytest
 from pathlib import Path
 from unittest.mock import patch
-from openclaw_ouroboros.paths import (
+from openclaw_gnomon.paths import (
     openclaw_skills_dir,
     openclaw_mcp_config_path,
-    ouroboros_config_path,
+    gnomon_config_path,
 )
 
 def test_openclaw_skills_dir_default(tmp_path):
@@ -34,15 +34,15 @@ def test_openclaw_mcp_config_path_env_override(tmp_path):
         result = openclaw_mcp_config_path()
         assert result == custom
 
-def test_ouroboros_config_path_default(tmp_path):
-    """Default: ~/.ouroboros/config.yaml"""
+def test_gnomon_config_path_default(tmp_path):
+    """Default: ~/.gnomon/config.yaml"""
     with patch.dict(os.environ, {"HOME": str(tmp_path)}):
-        result = ouroboros_config_path()
-        assert result == tmp_path / ".ouroboros" / "config.yaml"
+        result = gnomon_config_path()
+        assert result == tmp_path / ".gnomon" / "config.yaml"
 
-def test_ouroboros_config_path_env_override(tmp_path):
-    """OUROBOROS_CONFIG env var overrides"""
+def test_gnomon_config_path_env_override(tmp_path):
+    """GNOMON_CONFIG env var overrides"""
     custom = tmp_path / "custom_config.yaml"
-    with patch.dict(os.environ, {"OUROBOROS_CONFIG": str(custom)}):
-        result = ouroboros_config_path()
+    with patch.dict(os.environ, {"GNOMON_CONFIG": str(custom)}):
+        result = gnomon_config_path()
         assert result == custom

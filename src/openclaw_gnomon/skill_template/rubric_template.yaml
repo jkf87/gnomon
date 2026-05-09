@@ -1,0 +1,29 @@
+# Gnomon rubric template
+# Philosophy: define WHAT good looks like before you write a single line.
+# This is the eval-first contract. No rubric → no run.
+#
+# method options:
+#   quantitative  — non-LLM signal (file size, pixel count, regex match, etc.)
+#   persona-llm   — LLM judge simulating the target persona
+#   human         — manual human review required
+#
+# Warning: 100% persona-llm items will be flagged. Add quantitative signals.
+
+task: "설명: 이 워크플로가 달성해야 할 목표를 한 줄로"
+persona: "25~35세 직장인"
+
+items:
+  - name: "예시: 산출물 존재 확인"
+    description: "지정된 출력 파일이 생성됐는지 확인"
+    method: quantitative
+    pass_condition: "output 파일이 존재하고 크기 > 0 bytes"
+
+  - name: "예시: 핵심 메시지 전달"
+    description: "페르소나가 5초 내에 핵심 내용을 이해할 수 있는지"
+    method: persona-llm
+    pass_condition: "페르소나 시뮬레이션에서 주요 포인트 3개 이상 추출 가능"
+
+  - name: "예시: 최종 품질 검수"
+    description: "사람이 직접 확인해야 하는 주관적 품질 기준"
+    method: human
+    pass_condition: "검토자가 배포 가능 수준으로 판단"

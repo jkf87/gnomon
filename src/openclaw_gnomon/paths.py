@@ -20,10 +20,10 @@ def openclaw_mcp_config_path() -> Path:
     return home / ".openclaw" / "mcp" / "claude-mcp-config.json"
 
 
-def ouroboros_config_path() -> Path:
-    """Return ~/.ouroboros/config.yaml path. Override with OUROBOROS_CONFIG env var."""
-    env = os.environ.get("OUROBOROS_CONFIG")
+def gnomon_config_path() -> Path:
+    """Return ~/.gnomon/config.yaml path. Override with GNOMON_CONFIG env var."""
+    env = os.environ.get("GNOMON_CONFIG")
     if env:
         return Path(env)
     home = Path.home()
-    return home / ".ouroboros" / "config.yaml"
+    return home / ".gnomon" / "config.yaml"

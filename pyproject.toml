@@ -3,9 +3,9 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "openclaw-ouroboros"
+name = "openclaw-gnomon"
 version = "0.1.0"
-description = "Ouroboros as an OpenClaw skill + MCP, installable via uvx"
+description = "Gnomon: rubric-first evaluation harness for OpenClaw. Define what good looks like before writing."
 readme = "README.md"
 license = { text = "MIT" }
 authors = [{ name = "jkf87", email = "jjoongoo@gmail.com" }]
@@ -25,7 +25,7 @@ dev = [
 ]
 
 [project.scripts]
-openclaw-ouroboros = "openclaw_ouroboros.cli:app"
+openclaw-gnomon = "openclaw_gnomon.cli:app"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
