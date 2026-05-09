@@ -1,6 +1,10 @@
 # nomon
 
 <p align="center">
+  <img src="assets/nomon-hero.jpg" alt="nomon — a sundial casting an evaluation shadow" width="560">
+</p>
+
+<p align="center">
   <img src="docs/images/nomon-logo.jpg" alt="노몬 — 해시계 바늘이 드리우는 평가의 그림자" width="200">
 </p>
 
