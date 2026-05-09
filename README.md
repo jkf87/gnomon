@@ -1,6 +1,6 @@
 # openclaw-gnomon
 
-![Gnomon Concept](./docs/gnomon-concept.png)
+![Gnomon Banner](./docs/gnomon-banner.jpg)
 
 **Gnomon** — 노몬. 해시계 바늘처럼, 무엇을 측정할지 먼저 세운다.
 
