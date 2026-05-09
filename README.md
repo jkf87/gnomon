@@ -29,16 +29,16 @@ Rubric-first evaluation harness for OpenClaw. Define what "good" looks like befo
 ## Quick Start
 
 ```bash
-uvx --from git+https://github.com/jkf87/openclaw-gnomon gnomon install
+uvx --from git+https://github.com/jkf87/gnomon gnomon install
 ```
 
 Then in OpenClaw: `/gnomon:setup`
 
 Done. You now have `/gnomon:rubric`, `/gnomon:verify-check`, `/gnomon:run`, `/gnomon:calibrate`.
 
-Verify: `uvx --from git+https://github.com/jkf87/openclaw-gnomon gnomon doctor`
+Verify: `uvx --from git+https://github.com/jkf87/gnomon gnomon doctor`
 
-Uninstall: `uvx --from git+https://github.com/jkf87/openclaw-gnomon gnomon uninstall`
+Uninstall: `uvx --from git+https://github.com/jkf87/gnomon gnomon uninstall`
 
 ---
 
