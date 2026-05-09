@@ -3,7 +3,7 @@ from pathlib import Path
 
 
 def merge_mcp_entry(mcp_config_path: Path) -> None:
-    """Add nomon MCP server entry to config. Idempotent."""
+    """Add gnomon MCP server entry to config. Idempotent."""
     mcp_config_path = Path(mcp_config_path)
     mcp_config_path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -16,11 +16,11 @@ def merge_mcp_entry(mcp_config_path: Path) -> None:
     if "mcpServers" not in config:
         config["mcpServers"] = {}
 
-    if "nomon" not in config["mcpServers"]:
-        config["mcpServers"]["nomon"] = {
+    if "gnomon" not in config["mcpServers"]:
+        config["mcpServers"]["gnomon"] = {
             "type": "stdio",
             "command": "uvx",
-            "args": ["--from", "nomon[mcp]", "nomon", "mcp", "serve"]
+            "args": ["--from", "gnomon[mcp]", "gnomon", "mcp", "serve"]
         }
 
     with open(mcp_config_path, "w") as f:
@@ -28,7 +28,7 @@ def merge_mcp_entry(mcp_config_path: Path) -> None:
 
 
 def remove_mcp_entry(mcp_config_path: Path) -> None:
-    """Remove nomon MCP server entry from config. Idempotent."""
+    """Remove gnomon MCP server entry from config. Idempotent."""
     mcp_config_path = Path(mcp_config_path)
     if not mcp_config_path.exists():
         return
@@ -37,16 +37,16 @@ def remove_mcp_entry(mcp_config_path: Path) -> None:
         config = json.load(f)
 
     if "mcpServers" in config:
-        config["mcpServers"].pop("nomon", None)
+        config["mcpServers"].pop("gnomon", None)
 
     with open(mcp_config_path, "w") as f:
         json.dump(config, f, indent=2)
 
 
 def stage_skill_files(skills_dir: Path) -> None:
-    """Copy SKILL.md from package template to ~/.openclaw/skills/nomon/SKILL.md."""
+    """Copy SKILL.md from package template to ~/.openclaw/skills/gnomon/SKILL.md."""
     skills_dir = Path(skills_dir)
-    skill_target_dir = skills_dir / "nomon"
+    skill_target_dir = skills_dir / "gnomon"
     skill_target_dir.mkdir(parents=True, exist_ok=True)
 
     import importlib.resources
@@ -65,8 +65,8 @@ def stage_skill_files(skills_dir: Path) -> None:
         f.write(skill_content)
 
 
-def write_nomon_config(config_path: Path) -> None:
-    """Write ~/.nomon/config.yaml with runtime_backend: openclaw."""
+def write_gnomon_config(config_path: Path) -> None:
+    """Write ~/.ggnomon/config.yaml with runtime_backend: openclaw."""
     import yaml
     config_path = Path(config_path)
     config_path.parent.mkdir(parents=True, exist_ok=True)
