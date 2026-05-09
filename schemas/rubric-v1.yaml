@@ -1,0 +1,30 @@
+# Gnomon rubric schema v1
+# 평가 우선 워크플로의 시작점
+
+task:
+  name: ""           # 필수 — 작업 이름
+  description: ""    # 필수 — 작업 설명
+  goal_persona:      # 필수 — 평가 기준이 되는 페르소나
+    role: ""         # ex. "25~35세 직장인 카드뉴스 독자"
+    success_signal: ""  # ex. "5초에 핵심 1줄 요약 가능"
+
+rubric: []  # criterion 목록. 최소 1개.
+  # 각 항목:
+  # - id: string (고유 식별자)
+  # - description: string (평가 항목 설명)
+  # - label: "quantitative" | "persona-llm" | "human"
+  # - measure:
+  #     kind: string (측정 방법)
+  #     threshold: float|null
+  #     gate: string ("pass_if_gte" | "binary_pass" | "corr_with_llm_pool_gte_0_7")
+  #     persona_ref: string|null
+  #     prompt_template: string|null
+  #     sample_n: int|null
+  #     scale: string|null
+  # - weight: float (기본 1.0)
+
+# 강제 제약:
+# - quantitative 비율 >= 30%
+# - persona-llm 항목은 persona_ref 필수
+# - human 항목은 sample_n >= 3 필수
+# - label 없는 항목은 허용 안 됨
