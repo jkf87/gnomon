@@ -1,20 +1,23 @@
-import typer
-from pathlib import Path
 import sys
-from openclaw_gnomon.paths import (
-    openclaw_skills_dir,
-    openclaw_mcp_config_path,
-    gnomon_config_path,
-)
-from openclaw_gnomon.installer import (
-    stage_skill_files,
-    merge_mcp_entry,
-    write_gnomon_config,
-    remove_mcp_entry,
-)
+from pathlib import Path
+
+import typer
 from rich.console import Console
 
+from openclaw_gnomon.paths import (
+    gnomon_config_path,
+    openclaw_mcp_config_path,
+    openclaw_skills_dir,
+)
+from openclaw_gnomon.installer import (
+    merge_mcp_entry,
+    remove_mcp_entry,
+    stage_skill_files,
+    write_gnomon_config,
+)
+
 console = Console()
+err_console = Console(stderr=True)
 app = typer.Typer(help="Gnomon — eval-first workflow harness for OpenClaw")
 rubric_app = typer.Typer(help="Rubric management commands")
 app.add_typer(rubric_app, name="rubric")
@@ -49,7 +52,7 @@ def install(verbose: bool = typer.Option(False, "--verbose", "-v")):
         console.print("Run: /gnomon:setup")
 
     except Exception as e:
-        console.print(f"[red]✗ Installation failed: {e}[/red]")
+        err_console.print(f"[red]✗ Installation failed: {e}[/red]")
         if verbose:
             import traceback
             traceback.print_exc()
@@ -72,7 +75,7 @@ def uninstall(verbose: bool = typer.Option(False, "--verbose", "-v")):
         console.print("\n[bold green]Uninstall complete![/bold green]")
 
     except Exception as e:
-        console.print(f"[red]✗ Uninstall failed: {e}[/red]")
+        err_console.print(f"[red]✗ Uninstall failed: {e}[/red]")
         sys.exit(1)
 
 
@@ -128,7 +131,7 @@ def doctor(verbose: bool = typer.Option(False, "--verbose", "-v")):
             sys.exit(1)
 
     except Exception as e:
-        console.print(f"[red]Doctor check failed: {e}[/red]")
+        err_console.print(f"[red]Doctor check failed: {e}[/red]")
         sys.exit(1)
 
 
@@ -141,7 +144,7 @@ def run_workflow(
         rubric = Path("rubric.yaml")
 
     if not rubric.exists():
-        console.print(
+        err_console.print(
             "[red]✗ No rubric.yaml found.[/red]\n"
             "Gnomon requires eval criteria before execution.\n"
             "Create one with:\n\n"
@@ -151,13 +154,29 @@ def run_workflow(
         )
         sys.exit(1)
 
-    from openclaw_gnomon.rubric import load_rubric, validate_rubric
+    from openclaw_gnomon.rubric import RubricValidationError, dry_run_check, load_rubric, validate_rubric
+
     rubric_obj = load_rubric(rubric)
-    warnings = validate_rubric(rubric_obj)
+
+    try:
+        warnings = validate_rubric(rubric_obj)
+    except RubricValidationError as e:
+        err_console.print(f"[red]✗ Rubric validation failed:[/red]\n{e}")
+        err_console.print("\nFix the rubric and re-run: [bold]openclaw-gnomon rubric check rubric.yaml[/bold]")
+        sys.exit(1)
+
     for w in warnings:
         console.print(f"[yellow]⚠ {w}[/yellow]")
 
+    dry_errors = dry_run_check(rubric_obj)
+    if dry_errors:
+        err_console.print("[red]✗ Dry-run pre-flight failed:[/red]")
+        for err in dry_errors:
+            err_console.print(f"  [red]•[/red] {err}")
+        sys.exit(1)
+
     console.print(f"[green]✓[/green] Rubric loaded: {len(rubric_obj.items)} items")
+    console.print(f"[green]✓[/green] Persona: {rubric_obj.goal_persona.role}")
     console.print("[bold]Gnomon workflow ready. (wire your workflow execution here)[/bold]")
 
 
@@ -166,7 +185,6 @@ def rubric_new(
     output: Path = typer.Option(Path("rubric.yaml"), "--output", "-o", help="Output path"),
 ):
     """Generate a rubric.yaml scaffold in the current directory."""
-    import importlib.resources
     pkg_dir = Path(__file__).parent / "skill_template"
     template_path = pkg_dir / "rubric_template.yaml"
     content = template_path.read_text()
@@ -180,33 +198,63 @@ def rubric_new(
 def rubric_check(rubric_path: Path = typer.Argument(..., help="Path to rubric.yaml")):
     """Validate a rubric.yaml and show item label statistics."""
     if not rubric_path.exists():
-        console.print(f"[red]✗ File not found: {rubric_path}[/red]")
+        err_console.print(f"[red]✗ File not found: {rubric_path}[/red]")
         sys.exit(1)
 
-    from openclaw_gnomon.rubric import load_rubric, validate_rubric
-    rubric_obj = load_rubric(rubric_path)
-    warnings = validate_rubric(rubric_obj)
+    from openclaw_gnomon.rubric import (
+        QUANTITATIVE_MIN_RATIO,
+        RubricValidationError,
+        _label_counts,
+        load_rubric,
+        validate_rubric,
+    )
 
+    rubric_obj = load_rubric(rubric_path)
     total = len(rubric_obj.items)
-    counts: dict[str, int] = {}
-    for item in rubric_obj.items:
-        counts[item.method] = counts.get(item.method, 0) + 1
+    counts = _label_counts(rubric_obj)
 
     console.print(f"\n[bold]Rubric:[/bold] {rubric_obj.task}")
-    console.print(f"[bold]Persona:[/bold] {rubric_obj.persona}")
+    console.print(f"[bold]Persona:[/bold] {rubric_obj.goal_persona.role or '[dim]not set[/dim]'}")
     console.print(f"[bold]Items:[/bold] {total}\n")
 
-    for method, count in sorted(counts.items()):
+    for label, count in sorted(counts.items()):
         pct = count / total * 100 if total else 0
-        console.print(f"  {method:20s}  {count:3d}  ({pct:.0f}%)")
+        bar = "█" * int(pct / 10)
+        console.print(f"  {label:20s}  {count:3d}  ({pct:.0f}%)  {bar}")
+
+    quant_count = counts.get("quantitative", 0)
+    quant_ratio = quant_count / total if total else 0
+    llm_count = counts.get("persona-llm", 0)
+    llm_ratio = llm_count / total if total else 0
+
+    console.print()
+
+    if quant_ratio < QUANTITATIVE_MIN_RATIO:
+        err_console.print(
+            f"[red bold]✗ BLOCKED:[/red bold] quantitative ratio {quant_ratio:.0%} "
+            f"< required {QUANTITATIVE_MIN_RATIO:.0%}\n"
+            f"  Add {max(1, int(QUANTITATIVE_MIN_RATIO * total) - quant_count + 1)} "
+            f"more quantitative item(s) to proceed."
+        )
+        sys.exit(1)
+
+    try:
+        warnings = validate_rubric(rubric_obj)
+    except RubricValidationError as e:
+        err_console.print(f"[red bold]✗ BLOCKED:[/red bold] {e}")
+        sys.exit(1)
 
     if warnings:
-        console.print()
         for w in warnings:
             console.print(f"[yellow]⚠ {w}[/yellow]")
-        sys.exit(1)
-    else:
-        console.print("\n[green]✓ Rubric is valid.[/green]")
+
+    if llm_ratio > 0:
+        console.print(
+            f"[dim]ℹ  persona-llm items: {llm_count}/{total} ({llm_ratio:.0%}) — "
+            f"taste_gate will check drift every {rubric_obj.taste_gate.trigger_every_n} runs[/dim]"
+        )
+
+    console.print("[green]✓ Rubric is valid. Ready to run.[/green]")
 
 
 if __name__ == "__main__":

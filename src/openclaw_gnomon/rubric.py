@@ -202,7 +202,7 @@ def validate_rubric(rubric: Rubric) -> List[str]:
 
     llm_count = counts.get("persona-llm", 0)
     llm_ratio = llm_count / total
-    if llm_ratio > 0.70:
+    if llm_ratio >= 0.70:
         warnings_out.append(
             f"High persona-llm ratio: {llm_count}/{total} ({llm_ratio:.0%}). "
             "Consider adding more quantitative signals."
