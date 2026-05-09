@@ -1,6 +1,8 @@
 # openclaw-gnomon
 
-Gnomon — 노몬. 해시계 바늘처럼, 무엇을 측정할지 먼저 세운다.
+![Gnomon Concept](./docs/gnomon-concept.png)
+
+**Gnomon** — 노몬. 해시계 바늘처럼, 무엇을 측정할지 먼저 세운다.
 
 Rubric-first evaluation harness for OpenClaw. Define what "good" looks like before writing a single line.
 
@@ -8,7 +10,7 @@ Rubric-first evaluation harness for OpenClaw. Define what "good" looks like befo
 
 ## Why Gnomon?
 
-A gnomon is the blade of a sundial — it casts a shadow that tells you where you are. In the same way, a rubric.yaml casts the shape of success before any work begins.
+A **gnomon** is the blade of a sundial — it casts a shadow that tells you where you are. In the same way, a `rubric.yaml` casts the shape of success before any work begins.
 
 Gnomon enforces verifier-first discipline at the harness level — TDD applied to AI workflows.
 
