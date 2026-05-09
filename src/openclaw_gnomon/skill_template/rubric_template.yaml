@@ -1,29 +1,51 @@
-# Gnomon rubric template
-# Philosophy: define WHAT good looks like before you write a single line.
-# This is the eval-first contract. No rubric → no run.
-#
-# method options:
-#   quantitative  — non-LLM signal (file size, pixel count, regex match, etc.)
-#   persona-llm   — LLM judge simulating the target persona
-#   human         — manual human review required
-#
-# Warning: 100% persona-llm items will be flagged. Add quantitative signals.
+# Gnomon Rubric Template
+# 평가-중심 하네스: spec → rubric → verifier → writer
+# 이 파일을 작성하고 /gnomon:rubric check rubric.yaml 로 검증하세요.
 
-task: "설명: 이 워크플로가 달성해야 할 목표를 한 줄로"
-persona: "25~35세 직장인"
+task:
+  name: "Your task name"
+  description: "What you want to build or create"
+  goal_persona: "누가 어떤 맥락에서 사용하는가?"
+  success_signal: "성공의 신호는 무엇인가?"
 
-items:
-  - name: "예시: 산출물 존재 확인"
-    description: "지정된 출력 파일이 생성됐는지 확인"
-    method: quantitative
-    pass_condition: "output 파일이 존재하고 크기 > 0 bytes"
+# Rubric items: 각 항목은 평가의 한 차원
+# label은 반드시 3가지 중 하나: quantitative / persona-llm / human
+# quantitative가 전체의 30% 이상이어야 함 (LLM-only 방지)
 
-  - name: "예시: 핵심 메시지 전달"
-    description: "페르소나가 5초 내에 핵심 내용을 이해할 수 있는지"
-    method: persona-llm
-    pass_condition: "페르소나 시뮬레이션에서 주요 포인트 3개 이상 추출 가능"
+rubric:
+  # 예시 1: 정량 신호 (코드로 자동 측정)
+  - id: "design-contrast"
+    description: "텍스트-배경 색상 대비비가 WCAG AA 기준 충족"
+    label: "quantitative"
+    measure:
+      kind: "wcag_contrast"
+      level: "AA"  # AA=4.5:1, AAA=7:1
+    weight: 1.0
 
-  - name: "예시: 최종 품질 검수"
-    description: "사람이 직접 확인해야 하는 주관적 품질 기준"
-    method: human
-    pass_condition: "검토자가 배포 가능 수준으로 판단"
+  # 예시 2: 페르소나-LLM (LLM이지만 페르소나로 ground)
+  - id: "readability"
+    description: "페르소나가 5초에 핵심 요약 가능한가?"
+    label: "persona-llm"
+    measure:
+      kind: "persona_judge"
+      persona_ref: "task.goal_persona"
+      prompt: "당신은 {persona}입니다. 이 결과물을 읽고 5초 안에 핵심을 1줄로 요약할 수 있나요? PASS 또는 FAIL로 답하세요."
+    weight: 0.7
+
+  # 예시 3: 사람 평가 (taste residue 20%)
+  - id: "overall-quality"
+    description: "종합적인 만족도 (0-5점)"
+    label: "human"
+    measure:
+      kind: "human_score"
+      sample_n: 5
+      scale: 0..5
+    weight: 1.5
+
+# 메타 검증: rubric 자체가 좋은지 확인
+# 매 N번 실행 후 사람 채점 vs LLM 채점의 상관계수 계산
+# 0.7 이상이면 verifier가 taste를 제대로 잡고 있는 것
+taste_residue_gate:
+  trigger: "every_10_runs"
+  correlation_threshold: 0.7
+  on_drift: "alert"
