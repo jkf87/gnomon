@@ -23,7 +23,7 @@
     "summary": "16 unit+integration tests (paths 6, installer 8, cli 2+), E2E auto-test strong, edge cases covered.",
     "blockers": ["Minor: could add 1-2 edge-case tests"]
   },
-  "dim5_ouroboros_compat": {
+  "dim5_gnomon_compat": {
     "score": 96,
     "reviewer": "code review",
     "summary": "SKILL.md commands verified against spec, MCP entry uses [mcp] extra correctly, config schema valid.",

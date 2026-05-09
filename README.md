@@ -10,17 +10,15 @@ Rubric-first evaluation harness for OpenClaw. Define what "good" looks like befo
 
 A gnomon is the blade of a sundial — it casts a shadow that tells you where you are. In the same way, a rubric.yaml casts the shape of success before any work begins.
 
-### Ouroboros vs Gnomon
-
-| | Ouroboros | Gnomon |
-|---|---|---|
-| Philosophy | plan-first | rubric-first |
-| Entry point | interview → seed.yaml | rubric.yaml |
-| Loop driver | plan → code → test → verify | verifier → writer (repeat until PASS) |
-| Measurement | implicit | explicit: 정량 / 페르소나-LLM / 사람 |
-| Gate | none | LLM-only >70% blocks entry |
-
 Gnomon enforces verifier-first discipline at the harness level — TDD applied to AI workflows.
+
+| | Gnomon |
+|---|---|
+| Philosophy | rubric-first |
+| Entry point | rubric.yaml |
+| Loop driver | verifier → writer (repeat until PASS) |
+| Measurement | explicit: 정량 / 페르소나-LLM / 사람 |
+| Gate | LLM-only >70% blocks entry |
 
 ---
 

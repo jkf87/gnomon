@@ -6,7 +6,7 @@ LOGS_DIR="$REPO_ROOT/verification/logs"
 
 mkdir -p "$LOGS_DIR"
 
-echo "=== Ouroboros Verification Gate ==="
+echo "=== Gnomon Verification Gate ==="
 echo "Target: All 5 dims >= 95%"
 echo ""
 

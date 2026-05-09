@@ -1,10 +1,10 @@
-# End-User: Install Ouroboros
+# End-User: Install Gnomon
 
 One-line install:
 \`\`\`bash
-uvx --from git+https://github.com/jkf87/openclaw-ouroboros openclaw-ouroboros install
+uvx --from git+https://github.com/jkf87/openclaw-gnomon openclaw-gnomon install
 \`\`\`
 
-Verify: \`openclaw-ouroboros doctor\`
+Verify: \`openclaw-gnomon doctor\`
 
-Uninstall: \`openclaw-ouroboros uninstall\`
+Uninstall: \`openclaw-gnomon uninstall\`
