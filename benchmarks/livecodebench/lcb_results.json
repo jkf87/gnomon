@@ -1,0 +1,443 @@
+[
+  {
+    "task_id": "2777",
+    "condition": "baseline",
+    "passed": false,
+    "llm_calls": 1,
+    "elapsed": 11.032609939575195
+  },
+  {
+    "task_id": "2777",
+    "condition": "ouroboros",
+    "passed": false,
+    "llm_calls": 3,
+    "elapsed": 30.91966986656189
+  },
+  {
+    "task_id": "2777",
+    "condition": "gnomon",
+    "passed": false,
+    "llm_calls": 3,
+    "elapsed": 45.309099435806274,
+    "verdict": "PASS"
+  },
+  {
+    "task_id": "2816",
+    "condition": "baseline",
+    "passed": true,
+    "llm_calls": 1,
+    "elapsed": 14.444612264633179
+  },
+  {
+    "task_id": "2816",
+    "condition": "ouroboros",
+    "passed": true,
+    "llm_calls": 3,
+    "elapsed": 28.259233474731445
+  },
+  {
+    "task_id": "2816",
+    "condition": "gnomon",
+    "passed": true,
+    "llm_calls": 3,
+    "elapsed": 69.76216840744019,
+    "verdict": "PASS"
+  },
+  {
+    "task_id": "2785",
+    "condition": "baseline",
+    "passed": false,
+    "llm_calls": 1,
+    "elapsed": 48.64878487586975
+  },
+  {
+    "task_id": "2785",
+    "condition": "ouroboros",
+    "passed": false,
+    "llm_calls": 3,
+    "elapsed": 53.18319916725159
+  },
+  {
+    "task_id": "2785",
+    "condition": "gnomon",
+    "passed": false,
+    "llm_calls": 3,
+    "elapsed": 49.54861354827881,
+    "verdict": "PASS"
+  },
+  {
+    "task_id": "2866",
+    "condition": "baseline",
+    "passed": false,
+    "llm_calls": 1,
+    "elapsed": 14.929054021835327
+  },
+  {
+    "task_id": "2866",
+    "condition": "ouroboros",
+    "passed": false,
+    "llm_calls": 3,
+    "elapsed": 43.53213024139404
+  },
+  {
+    "task_id": "2866",
+    "condition": "gnomon",
+    "passed": false,
+    "llm_calls": 3,
+    "elapsed": 65.73409700393677,
+    "verdict": "PASS"
+  },
+  {
+    "task_id": "2881",
+    "condition": "baseline",
+    "passed": false,
+    "llm_calls": 1,
+    "elapsed": 8.416848182678223
+  },
+  {
+    "task_id": "2881",
+    "condition": "ouroboros",
+    "passed": false,
+    "llm_calls": 3,
+    "elapsed": 23.461626768112183
+  },
+  {
+    "task_id": "2881",
+    "condition": "gnomon",
+    "passed": false,
+    "llm_calls": 3,
+    "elapsed": 35.834930419921875,
+    "verdict": "PASS"
+  },
+  {
+    "task_id": "2902",
+    "condition": "baseline",
+    "passed": false,
+    "llm_calls": 1,
+    "elapsed": 11.08937382698059
+  },
+  {
+    "task_id": "2902",
+    "condition": "ouroboros",
+    "passed": true,
+    "llm_calls": 3,
+    "elapsed": 29.6303071975708
+  },
+  {
+    "task_id": "2902",
+    "condition": "gnomon",
+    "passed": false,
+    "llm_calls": 4,
+    "elapsed": 98.87829351425171,
+    "verdict": "FAIL"
+  },
+  {
+    "task_id": "2998",
+    "condition": "baseline",
+    "passed": false,
+    "llm_calls": 1,
+    "elapsed": 11.891801118850708
+  },
+  {
+    "task_id": "2998",
+    "condition": "ouroboros",
+    "passed": false,
+    "llm_calls": 3,
+    "elapsed": 34.80497908592224
+  },
+  {
+    "task_id": "2998",
+    "condition": "gnomon",
+    "passed": false,
+    "llm_calls": 3,
+    "elapsed": 39.23197603225708,
+    "verdict": "PASS"
+  },
+  {
+    "task_id": "3055",
+    "condition": "baseline",
+    "passed": true,
+    "llm_calls": 1,
+    "elapsed": 7.15072774887085
+  },
+  {
+    "task_id": "3055",
+    "condition": "ouroboros",
+    "passed": true,
+    "llm_calls": 3,
+    "elapsed": 50.416972398757935
+  },
+  {
+    "task_id": "3055",
+    "condition": "gnomon",
+    "passed": true,
+    "llm_calls": 3,
+    "elapsed": 35.68849802017212,
+    "verdict": "PASS"
+  },
+  {
+    "task_id": "3176",
+    "condition": "baseline",
+    "passed": false,
+    "llm_calls": 1,
+    "elapsed": 19.56508207321167
+  },
+  {
+    "task_id": "3176",
+    "condition": "ouroboros",
+    "passed": false,
+    "llm_calls": 3,
+    "elapsed": 49.536569595336914
+  },
+  {
+    "task_id": "3176",
+    "condition": "gnomon",
+    "passed": false,
+    "llm_calls": 3,
+    "elapsed": 71.91797685623169,
+    "verdict": "PASS"
+  },
+  {
+    "task_id": "3193",
+    "condition": "baseline",
+    "passed": false,
+    "llm_calls": 1,
+    "elapsed": 11.163760900497437
+  },
+  {
+    "task_id": "3193",
+    "condition": "ouroboros",
+    "passed": false,
+    "llm_calls": 3,
+    "elapsed": 41.701987981796265
+  },
+  {
+    "task_id": "3193",
+    "condition": "gnomon",
+    "passed": false,
+    "llm_calls": 3,
+    "elapsed": 45.85290002822876,
+    "verdict": "PASS"
+  },
+  {
+    "task_id": "2756",
+    "condition": "baseline",
+    "passed": false,
+    "llm_calls": 1,
+    "elapsed": 6.373038053512573
+  },
+  {
+    "task_id": "2756",
+    "condition": "ouroboros",
+    "passed": false,
+    "llm_calls": 3,
+    "elapsed": 23.69905686378479
+  },
+  {
+    "task_id": "2756",
+    "condition": "gnomon",
+    "passed": false,
+    "llm_calls": 3,
+    "elapsed": 47.01138424873352,
+    "verdict": "PASS"
+  },
+  {
+    "task_id": "2870",
+    "condition": "baseline",
+    "passed": false,
+    "llm_calls": 1,
+    "elapsed": 28.403151988983154
+  },
+  {
+    "task_id": "2870",
+    "condition": "ouroboros",
+    "passed": true,
+    "llm_calls": 3,
+    "elapsed": 44.26467823982239
+  },
+  {
+    "task_id": "2870",
+    "condition": "gnomon",
+    "passed": false,
+    "llm_calls": 3,
+    "elapsed": 82.25603008270264,
+    "verdict": "PASS"
+  },
+  {
+    "task_id": "2917",
+    "condition": "baseline",
+    "passed": false,
+    "llm_calls": 1,
+    "elapsed": 18.330821990966797
+  },
+  {
+    "task_id": "2917",
+    "condition": "ouroboros",
+    "passed": false,
+    "llm_calls": 0,
+    "elapsed": 0,
+    "error": "Command '['claude', '-p', 'Review this solution for correctness and edge cases. List any issues.\\n\\nProblem: count-pairs-whose-sum-is-less-than-target\\n\\nImplementation:\\nclass Solution:\\n    def countPairs(self, nums: List[int], target: int) -> int:\\n        nums.sort()\\n        left, right = 0, len(nums) - 1\\n        count = 0\\n        \\n        while left < right:\\n            if nums[left] + nums[right] < target:\\n                count += right - left\\n                left += 1\\n            else:\\n                right -= 1\\n        \\n        return count', '--model', 'claude-haiku-4-5-20251001']' timed out after 90 seconds"
+  },
+  {
+    "task_id": "2917",
+    "condition": "gnomon",
+    "passed": false,
+    "llm_calls": 3,
+    "elapsed": 32.68881297111511,
+    "verdict": "PASS"
+  },
+  {
+    "task_id": "3044",
+    "condition": "baseline",
+    "passed": false,
+    "llm_calls": 1,
+    "elapsed": 12.559430837631226
+  },
+  {
+    "task_id": "3044",
+    "condition": "ouroboros",
+    "passed": false,
+    "llm_calls": 3,
+    "elapsed": 53.70946288108826
+  },
+  {
+    "task_id": "3044",
+    "condition": "gnomon",
+    "passed": false,
+    "llm_calls": 4,
+    "elapsed": 175.7978367805481,
+    "verdict": "FAIL"
+  },
+  {
+    "task_id": "3199",
+    "condition": "baseline",
+    "passed": false,
+    "llm_calls": 1,
+    "elapsed": 18.693390130996704
+  },
+  {
+    "task_id": "3199",
+    "condition": "ouroboros",
+    "passed": false,
+    "llm_calls": 3,
+    "elapsed": 55.380833864212036
+  },
+  {
+    "task_id": "3199",
+    "condition": "gnomon",
+    "passed": false,
+    "llm_calls": 3,
+    "elapsed": 70.53484010696411,
+    "verdict": "PASS"
+  },
+  {
+    "task_id": "3220",
+    "condition": "baseline",
+    "passed": false,
+    "llm_calls": 1,
+    "elapsed": 10.13065791130066
+  },
+  {
+    "task_id": "3220",
+    "condition": "ouroboros",
+    "passed": false,
+    "llm_calls": 3,
+    "elapsed": 31.96784520149231
+  },
+  {
+    "task_id": "3220",
+    "condition": "gnomon",
+    "passed": false,
+    "llm_calls": 3,
+    "elapsed": 81.47974491119385,
+    "verdict": "PASS"
+  },
+  {
+    "task_id": "3246",
+    "condition": "baseline",
+    "passed": false,
+    "llm_calls": 1,
+    "elapsed": 8.664322137832642
+  },
+  {
+    "task_id": "3246",
+    "condition": "ouroboros",
+    "passed": false,
+    "llm_calls": 3,
+    "elapsed": 71.19628405570984
+  },
+  {
+    "task_id": "3246",
+    "condition": "gnomon",
+    "passed": false,
+    "llm_calls": 4,
+    "elapsed": 79.26439642906189,
+    "verdict": "FAIL"
+  },
+  {
+    "task_id": "3312",
+    "condition": "baseline",
+    "passed": true,
+    "llm_calls": 1,
+    "elapsed": 6.63140869140625
+  },
+  {
+    "task_id": "3312",
+    "condition": "ouroboros",
+    "passed": true,
+    "llm_calls": 3,
+    "elapsed": 26.155603885650635
+  },
+  {
+    "task_id": "3312",
+    "condition": "gnomon",
+    "passed": true,
+    "llm_calls": 3,
+    "elapsed": 30.633275985717773,
+    "verdict": "PASS"
+  },
+  {
+    "task_id": "3252",
+    "condition": "baseline",
+    "passed": false,
+    "llm_calls": 1,
+    "elapsed": 17.14262318611145
+  },
+  {
+    "task_id": "3252",
+    "condition": "ouroboros",
+    "passed": false,
+    "llm_calls": 3,
+    "elapsed": 86.45180797576904
+  },
+  {
+    "task_id": "3252",
+    "condition": "gnomon",
+    "passed": false,
+    "llm_calls": 0,
+    "elapsed": 0,
+    "error": "Command '['claude', '-p', 'RUBRIC:\\n# Rubric for \"Count the Number of Incremovable Subarrays\"\\n\\nHere are 4-5 measurable criteria a correct solution MUST satisfy:\\n\\n## 1. **Correct Output on All Three Examples** (Non-negotiable)\\n- Input `[1,2,3,4]` \u2192 Output exactly `10`\\n- Input `[6,5,7,8]` \u2192 Output exactly `7`\\n- Input `[8,7,6,6]` \u2192 Output exactly `3`\\n- Failure on any example = incorrect solution\\n\\n## 2. **Accurate Prefix and Suffix Detection**\\n- **Left pointer**: Correctly identifies the longest strictly increasing prefix. For `[6,5,7,8]`, left must be `1` (since 6 \u226e 5). For `[1,2,3,4]`, left must be `4` (entire array).\\n- **Right pointer**: Correctly identifies the longest strictly increasing suffix from the end. For `[6,5,7,8]`, right must be `2` (suffix is `[7,8]`).\\n- These two values are used to optimize counting.\\n\\n## 3. **Valid Removal Logic - Connection Condition**\\nWhen removing subarray `[i, j]`, the solution must verify that the remaining array is strictly increasing:\\n- `nums[0...i-1]` is strictly increasing (guaranteed by left pointer)\\n- `nums[j+1...n-1]` is strictly increasing (guaranteed by right pointer)\\n- **If both prefix and suffix exist** (i > 0 AND j < n-1): Must check `nums[i-1] < nums[j+1]` to maintain strict order across the gap\\n- Example: In `[6,5,7,8]`, removing `[5]` requires checking if `6 < 7` (yes, valid). Removing `[6,5,7]` requires checking if nothing needs to match (suffix is `[8]`, valid).\\n\\n## 4. **Handles All Edge Cases Correctly**\\n- **Entire array strictly increasing** (e.g., `[1,2,3,4]`): Must return `n(n+1)/2` = 10, not less\\n- **Single element** (e.g., `[5]`): Must return `1`\\n- **Prefix + suffix >= array length** (entire array can be removed): Must count these as valid\\n- **Duplicates break strict increasing** (e.g., `[8,7,6,6]`): Must correctly identify that `[6,6]` is not strictly increasing\\n\\n## 5. **Enumeration Completeness**\\n- Must explicitly check or implicitly count all possible subarrays: `O(n\u00b2)` total subarrays where `1 \u2264 length \u2264 n`\\n- Cannot use approximations or heuristics; must verify each candidate subarray\\'s removal or use a mathematically sound counting formula\\n- For partial credit: A brute-force solution checking all `O(n\u00b2)` subarrays is acceptable given constraints (n \u2264 50)\\n\\n---\\n\\n**Optional Optimization Criterion** (for excellence):\\n- Solves in better than O(n\u00b3) time using prefix/suffix optimization rather than naive O(n\u00b3) checking of all subarrays\\n\\nUsing the rubric above as your guide, implement the solution. Return ONLY the complete Python class code.\\n\\nProblem: count-the-number-of-incremovable-subarrays-i\\n\\nYou are given a 0-indexed array of positive integers nums.\\nA subarray of nums is called incremovable if nums becomes strictly increasing on removing the subarray. For example, the subarray [3, 4] is an incremovable subarray of [5, 3, 4, 6, 7] because removing this subarray changes the array [5, 3, 4, 6, 7] to [5, 6, 7] which is strictly increasing.\\nReturn the total number of incremovable subarrays of nums.\\nNote that an empty array is considered strictly increasing.\\nA subarray is a contiguous non-empty sequence of elements within an array.\\n \\nExample 1:\\n\\nInput: nums = [1,2,3,4]\\nOutput: 10\\nExplanation: The 10 incremovable subarrays are: [1], [2], [3], [4], [1,2], [2,3], [3,4], [1,2,3], [2,3,4], and [1,2,3,4], because on removing any one of these subarrays nums becomes strictly increasing. Note that you cannot select an empty subarray.\\n\\nExample 2:\\n\\nInput: nums = [6,5,7,8]\\nOutput: 7\\nExplanation: The 7 incremovable subarrays are: [5], [6], [5,7], [6,5], [5,7,8], [6,5,7] and [6,5,7,8].\\nIt can be shown that there are only 7 incremovable subarrays in nums.\\n\\nExample 3:\\n\\nInput: nums = [8,7,6,6]\\nOutput: 3\\nExplanation: The 3 incremovable subarrays are: [8,7,6], [7,6,6], and [8,7,6,6]. Note that [8,7] is not an incremovable subarray because after removing [8,7] nums becomes [6,6], which is sorted in ascending order but not strictly increasing.\\n\\n \\nConstraints:\\n\\n1 <= nums.length <= 50\\n1 <= nums[i] <= 50\\n\\nComplete this Python class:\\nclass Solution:\\n    def incremovableSubarrayCount(self, nums: List[int]) -> int:\\n        \\n', '--model', 'claude-haiku-4-5-20251001']' timed out after 90 seconds"
+  },
+  {
+    "task_id": "3309",
+    "condition": "baseline",
+    "passed": false,
+    "llm_calls": 1,
+    "elapsed": 6.286380052566528
+  },
+  {
+    "task_id": "3309",
+    "condition": "ouroboros",
+    "passed": false,
+    "llm_calls": 3,
+    "elapsed": 44.62827920913696
+  },
+  {
+    "task_id": "3309",
+    "condition": "gnomon",
+    "passed": false,
+    "llm_calls": 3,
+    "elapsed": 40.91397285461426,
+    "verdict": "PASS"
+  }
+]

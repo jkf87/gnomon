@@ -1,0 +1,325 @@
+[
+  {
+    "task_id": "abc301_f",
+    "condition": "baseline",
+    "passed": false,
+    "llm_calls": 0,
+    "elapsed": 0,
+    "error": "Command '['claude', '-p', 'Solve this problem. Return ONLY the Python code.\\n\\nProblem: Anti\\n\\nDescription:\\nA DDoS-type string is a string of length 4 consisting of uppercase and lowercase English l"
+  },
+  {
+    "task_id": "abc301_f",
+    "condition": "ouroboros",
+    "passed": false,
+    "llm_calls": 0,
+    "elapsed": 0,
+    "error": "Command '['claude', '-p', 'Solve this problem. Return ONLY the Python code.\\n\\nProblem: Anti\\n\\nDescription:\\nA DDoS-type string is a string of length 4 consisting of uppercase and lowercase English l"
+  },
+  {
+    "task_id": "abc301_f",
+    "condition": "gnomon",
+    "passed": false,
+    "llm_calls": 0,
+    "elapsed": 0,
+    "error": "Command '['claude', '-p', 'Given this competitive programming problem, define a rubric of 4-5 criteria that a correct solution MUST satisfy. Be very specific about algorithm requirements.\\n\\nProblem: "
+  },
+  {
+    "task_id": "abc303_e",
+    "condition": "baseline",
+    "passed": true,
+    "llm_calls": 1,
+    "elapsed": 118.94254302978516
+  },
+  {
+    "task_id": "abc303_e",
+    "condition": "ouroboros",
+    "passed": false,
+    "llm_calls": 0,
+    "elapsed": 0,
+    "error": "Command '['claude', '-p', 'Solve this problem. Return ONLY the Python code.\\n\\nProblem: A Gift From the Stars\\n\\nDescription:\\nA graph with (k+1) vertices and k edges is called a level-k\\\\ (k\\\\geq 2) "
+  },
+  {
+    "task_id": "abc303_e",
+    "condition": "gnomon",
+    "passed": false,
+    "llm_calls": 0,
+    "elapsed": 0,
+    "error": "Command '['claude', '-p', 'Given this competitive programming problem, define a rubric of 4-5 criteria that a correct solution MUST satisfy. Be very specific about algorithm requirements.\\n\\nProblem: "
+  },
+  {
+    "task_id": "abc306_e",
+    "condition": "baseline",
+    "passed": true,
+    "llm_calls": 1,
+    "elapsed": 16.764562845230103
+  },
+  {
+    "task_id": "abc306_e",
+    "condition": "ouroboros",
+    "passed": true,
+    "llm_calls": 3,
+    "elapsed": 38.22353720664978
+  },
+  {
+    "task_id": "abc306_e",
+    "condition": "gnomon",
+    "passed": true,
+    "llm_calls": 3,
+    "elapsed": 91.9621684551239
+  },
+  {
+    "task_id": "abc309_e",
+    "condition": "baseline",
+    "passed": true,
+    "llm_calls": 1,
+    "elapsed": 30.440773963928223
+  },
+  {
+    "task_id": "abc309_e",
+    "condition": "ouroboros",
+    "passed": false,
+    "llm_calls": 3,
+    "elapsed": 75.47306108474731
+  },
+  {
+    "task_id": "abc309_e",
+    "condition": "gnomon",
+    "passed": true,
+    "llm_calls": 3,
+    "elapsed": 98.3792417049408
+  },
+  {
+    "task_id": "abc312_e",
+    "condition": "baseline",
+    "passed": true,
+    "llm_calls": 1,
+    "elapsed": 23.313177824020386
+  },
+  {
+    "task_id": "abc312_e",
+    "condition": "ouroboros",
+    "passed": false,
+    "llm_calls": 3,
+    "elapsed": 110.48574423789978
+  },
+  {
+    "task_id": "abc312_e",
+    "condition": "gnomon",
+    "passed": true,
+    "llm_calls": 3,
+    "elapsed": 101.27168035507202
+  },
+  {
+    "task_id": "abc315_e",
+    "condition": "baseline",
+    "passed": false,
+    "llm_calls": 1,
+    "elapsed": 28.288122177124023
+  },
+  {
+    "task_id": "abc315_e",
+    "condition": "ouroboros",
+    "passed": false,
+    "llm_calls": 3,
+    "elapsed": 88.20160126686096
+  },
+  {
+    "task_id": "abc315_e",
+    "condition": "gnomon",
+    "passed": false,
+    "llm_calls": 3,
+    "elapsed": 128.80973386764526
+  },
+  {
+    "task_id": "abc320_e",
+    "condition": "baseline",
+    "passed": true,
+    "llm_calls": 1,
+    "elapsed": 29.715469121932983
+  },
+  {
+    "task_id": "abc320_e",
+    "condition": "ouroboros",
+    "passed": false,
+    "llm_calls": 3,
+    "elapsed": 147.26977133750916
+  },
+  {
+    "task_id": "abc320_e",
+    "condition": "gnomon",
+    "passed": true,
+    "llm_calls": 3,
+    "elapsed": 163.45806288719177
+  },
+  {
+    "task_id": "abc323_d",
+    "condition": "baseline",
+    "passed": true,
+    "llm_calls": 1,
+    "elapsed": 30.27026891708374
+  },
+  {
+    "task_id": "abc323_d",
+    "condition": "ouroboros",
+    "passed": false,
+    "llm_calls": 3,
+    "elapsed": 168.90269494056702
+  },
+  {
+    "task_id": "abc323_d",
+    "condition": "gnomon",
+    "passed": true,
+    "llm_calls": 4,
+    "elapsed": 104.53554487228394
+  },
+  {
+    "task_id": "abc325_f",
+    "condition": "baseline",
+    "passed": true,
+    "llm_calls": 1,
+    "elapsed": 55.74917817115784
+  },
+  {
+    "task_id": "abc325_f",
+    "condition": "ouroboros",
+    "passed": false,
+    "llm_calls": 3,
+    "elapsed": 161.86624002456665
+  },
+  {
+    "task_id": "abc325_f",
+    "condition": "gnomon",
+    "passed": true,
+    "llm_calls": 3,
+    "elapsed": 106.85964179039001
+  },
+  {
+    "task_id": "abc326_d",
+    "condition": "baseline",
+    "passed": false,
+    "llm_calls": 1,
+    "elapsed": 69.58764910697937
+  },
+  {
+    "task_id": "abc326_d",
+    "condition": "ouroboros",
+    "passed": false,
+    "llm_calls": 3,
+    "elapsed": 145.839049577713
+  },
+  {
+    "task_id": "abc326_d",
+    "condition": "gnomon",
+    "passed": false,
+    "llm_calls": 0,
+    "elapsed": 0,
+    "error": "Command '['claude', '-p', 'RUBRIC (requirements for correctness):\\nLooking at this ABC Puzzle problem, here\\'s a **4-criteria rubric** that a correct solution must satisfy:\\n\\n## Rubric for ABC Puzzle"
+  },
+  {
+    "task_id": "abc329_e",
+    "condition": "baseline",
+    "passed": false,
+    "llm_calls": 0,
+    "elapsed": 0,
+    "error": "Command '['claude', '-p', 'Solve this problem. Return ONLY the Python code.\\n\\nProblem: Stamp\\n\\nDescription:\\nYou are given two strings: S, which consists of uppercase English letters and has length "
+  },
+  {
+    "task_id": "abc329_e",
+    "condition": "ouroboros",
+    "passed": false,
+    "llm_calls": 3,
+    "elapsed": 125.33665204048157
+  },
+  {
+    "task_id": "abc329_e",
+    "condition": "gnomon",
+    "passed": true,
+    "llm_calls": 3,
+    "elapsed": 209.1180558204651
+  },
+  {
+    "task_id": "abc331_e",
+    "condition": "baseline",
+    "passed": true,
+    "llm_calls": 1,
+    "elapsed": 50.69032096862793
+  },
+  {
+    "task_id": "abc331_e",
+    "condition": "ouroboros",
+    "passed": false,
+    "llm_calls": 3,
+    "elapsed": 124.55961489677429
+  },
+  {
+    "task_id": "abc331_e",
+    "condition": "gnomon",
+    "passed": true,
+    "llm_calls": 3,
+    "elapsed": 122.1194863319397
+  },
+  {
+    "task_id": "abc337_e",
+    "condition": "baseline",
+    "passed": false,
+    "llm_calls": 1,
+    "elapsed": 60.247612953186035
+  },
+  {
+    "task_id": "abc337_e",
+    "condition": "ouroboros",
+    "passed": false,
+    "llm_calls": 3,
+    "elapsed": 70.48686528205872
+  },
+  {
+    "task_id": "abc337_e",
+    "condition": "gnomon",
+    "passed": false,
+    "llm_calls": 3,
+    "elapsed": 147.66857481002808
+  },
+  {
+    "task_id": "abc340_e",
+    "condition": "baseline",
+    "passed": true,
+    "llm_calls": 1,
+    "elapsed": 50.86601185798645
+  },
+  {
+    "task_id": "abc340_e",
+    "condition": "ouroboros",
+    "passed": false,
+    "llm_calls": 3,
+    "elapsed": 51.26710796356201
+  },
+  {
+    "task_id": "abc340_e",
+    "condition": "gnomon",
+    "passed": true,
+    "llm_calls": 3,
+    "elapsed": 141.69929814338684
+  },
+  {
+    "task_id": "abc342_e",
+    "condition": "baseline",
+    "passed": false,
+    "llm_calls": 1,
+    "elapsed": 58.80665326118469
+  },
+  {
+    "task_id": "abc342_e",
+    "condition": "ouroboros",
+    "passed": false,
+    "llm_calls": 3,
+    "elapsed": 127.5763590335846
+  },
+  {
+    "task_id": "abc342_e",
+    "condition": "gnomon",
+    "passed": false,
+    "llm_calls": 0,
+    "elapsed": 0,
+    "error": "Command '['claude', '-p', 'Strictly check if this solution satisfies EACH rubric criterion.\\n\\nRUBRIC:\\n# Rubric for \"Last Train\" Problem\\n\\nHere are 4-5 specific algorithmic criteria that a correct s"
+  }
+]
