@@ -1,0 +1,40 @@
+{
+  "name": "@jkf87/gnomon-gates",
+  "version": "0.1.0",
+  "description": "Gnomon gate engine (TypeScript) — Backward Design evaluation gates for agent loops: derive judgeable pass/fail gates from plain-text acceptance criteria and decide close-or-continue without human review",
+  "type": "module",
+  "main": "./dist/evaluation-gates.js",
+  "types": "./dist/evaluation-gates.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/evaluation-gates.d.ts",
+      "import": "./dist/evaluation-gates.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "npm run build && node --test test/*.test.mjs",
+    "prepublishOnly": "npm test"
+  },
+  "keywords": [
+    "backward-design",
+    "evaluation",
+    "acceptance-criteria",
+    "llm-judge",
+    "rubric",
+    "agent-loop",
+    "loop-closure",
+    "ouroboros"
+  ],
+  "author": "jkf87",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^26.0.0",
+    "typescript": "^6.0.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jkf87/gnomon.git",
+    "directory": "packages/gates"
+  }
+}

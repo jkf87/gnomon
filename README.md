@@ -131,6 +131,23 @@ taste_gate:
 
 ---
 
+## Gate Engine (TypeScript) — `packages/gates`
+
+A standalone TypeScript engine that turns plain-string acceptance criteria into judgeable evaluation gates and decides loop closure deterministically — the Backward Design counterpart to the Python harness above.
+
+- Derives one gate per AC (content-hash keyed): observable conditions + evidence spec + calibration pair
+- Qualitative ACs → rubric LLM-judge gates (`ac_compliance` + `score ∈ [0,1]`); `uncertainty > 0.3` resolves via multi-judge consensus, never human review
+- Mixed closure policy: all `critical` gates pass AND non-critical pass ratio ≥ 0.8 → `close`, else `continue`
+- Merge precedence `override > derived > default`; editing AC text invalidates its stored gate
+
+```bash
+cd packages/gates && npm install && npm test   # 12 tests
+```
+
+Built through a full Ouroboros loop (interview → QA-refined seed → autonomous run → 3-stage evaluation, APPROVED). The origin seed ships in [`packages/gates/seeds/`](packages/gates/seeds/). See [`packages/gates/README.md`](packages/gates/README.md).
+
+---
+
 ## OpenClaw Skills (after install)
 
 | Skill | Description |

@@ -1,0 +1,207 @@
+goal: Extend the existing Ouroboros Seed execution model with Backward Design-derived
+  evaluation gates that automatically judge AC pass/fail and close loops when completion
+  criteria are satisfied
+task_type: code
+brownfield_context:
+  project_type: brownfield
+  context_references:
+  - path: /Users/conanssam-m4/.claude/plugins/cache/ouroboros/ouroboros/0.44.0/src/ouroboros
+    role: primary
+  existing_patterns:
+  - "frozen Seed model with model_config extra:'allow' reserved for plugin-owned structured handoff data (core/seed.py)"
+  - "ACNode.metadata dict[str,Any] with to_dict/from_dict round-trip serialization (core/ac_tree.py)"
+  - "3-stage evaluation pipeline mechanical -> semantic -> consensus (docs/guides/evaluation-pipeline.md)"
+  existing_dependencies: []
+constraints:
+- Preserve existing string-based Seed acceptance_criteria; no forced object migration.
+  The frozen Seed class body must not be modified — gate persistence is allowed only
+  via the reserved Seed extra field, ACNode.metadata, or a sidecar lockfile
+- Evaluation gates are execution gates for loop closure, not design-review gates;
+  a loop must not close before the closure policy passes
+- Qualitative ACs are judged by rubric LLM-judge gates returning an ac_compliance
+  boolean plus a score in [0,1]
+- Every derived gate must include observable binary pass/fail conditions, an evidence
+  specification, and a calibration pair (one known-passing and one known-failing example)
+- Derived gates are stored outside acceptance_criteria, keyed by AC content hash
+- Gate resolution merge precedence is literal and fixed - override > derived > default
+- Inherited pipeline defaults are pinned - satisfaction_threshold=0.8 is the Stage 2
+  per-AC semantic score minimum; uncertainty>0.3 automatically triggers Stage 3
+  multi-model consensus re-verification which resolves to a final gate result before
+  any closure decision (no human escalation)
+- The aggregate noncritical closure threshold is a newly declared value noncritical_pass_ratio
+  (default 0.8), distinct from the per-AC semantic score threshold
+- 'Definitions - targeted AC: every leaf AC of the effective AC tree at evaluation
+  time, including runtime-decomposed sub-ACs. critical gate: an effective gate with
+  critical=true, set by explicit override or derivation, default false. override gate:
+  a user-authored gate stored in the reserved Seed extra field. derived gate: a gate
+  produced by Backward Design derivation. default gate: a gate materialized purely
+  from inherited pipeline defaults. effective gate: the per-AC result of merging override
+  > derived > default. inherited defaults: satisfaction_threshold 0.8, uncertainty
+  trigger 0.3, noncritical_pass_ratio 0.8'
+acceptance_criteria:
+- Existing string-AC Seed YAML files keep working unchanged after the gate feature
+  lands - no example Seed is invalidated (evidence - fixture parse suite over examples
+  exits 0)
+- Every targeted AC in a loop run carries exactly one effective evaluation gate with
+  observable binary conditions, an evidence specification, and a calibration pair,
+  so no targeted AC is unjudgeable (evidence - derivation tests over fixture seeds)
+- A qualitative AC such as "users complete the main task without friction" is judged
+  automatically - its rubric LLM-judge gate returns ac_compliance plus score in [0,1],
+  score>=0.8 passes, and uncertainty>0.3 is resolved through Stage 3 consensus into
+  a final gate result without human review (evidence - rubric gate integration test
+  over sample qualitative ACs)
+- Every evaluation run ends in a deterministic close-or-continue decision - close exactly
+  when all critical gates pass AND the noncritical pass ratio >= noncritical_pass_ratio,
+  continue otherwise, in both passing and failing cases and after any consensus resolution
+  (evidence - closure policy tests covering close, continue, and consensus paths)
+- The same Seed and overrides always produce the same effective gates - merge precedence
+  override > derived > default is deterministic (evidence - merge precedence property
+  tests)
+- Editing an AC's text invalidates its stored derived gate via content-hash mismatch
+  and forces re-derivation before that gate can pass again (evidence - hash invalidation
+  unit test)
+ontology_schema:
+  name: LoopClosureEvaluationGate
+  description: The new evaluation model this seed introduces. Pre-existing entities
+    (Seed, acceptance_criteria, ACNode, evaluation pipeline stages) are intentionally
+    modeled by reference through brownfield_context.existing_patterns rather than
+    re-modeled here, to avoid spec-code drift
+  fields:
+  - name: ac_hash
+    type: string
+    description: Content hash binding the derived gate to stable AC text
+    required: true
+  - name: condition
+    type: array
+    description: Observable binary pass/fail conditions for the criterion
+    required: true
+  - name: evidence
+    type: object
+    description: Artifacts, paths, scenarios, or outputs the judge must inspect
+    required: true
+  - name: calibration
+    type: object
+    description: Known passing and failing examples used to validate gate discrimination
+    required: true
+  - name: critical
+    type: boolean
+    description: Whether this gate must pass for loop closure (default false)
+    required: true
+  - name: verification_method
+    type: string
+    description: How the gate is evaluated - deterministic or rubric_llm_judge
+    required: true
+  - name: source
+    type: string
+    description: Provenance of the effective gate - override, derived, or default
+    required: true
+related_schemas:
+- name: GateResolutionPolicy
+  description: How per-AC effective gates are materialized and how closure is aggregated
+  fields:
+  - name: merge_precedence
+    type: array
+    description: Fixed order - override, derived, default
+    required: true
+  - name: defaults
+    type: object
+    description: Inherited pipeline defaults - satisfaction_threshold 0.8, uncertainty
+      trigger 0.3, noncritical_pass_ratio 0.8
+    required: true
+  - name: criticality_assignment
+    type: string
+    description: critical=true only via explicit override or derivation evidence,
+      default false
+    required: true
+- name: GateResult
+  description: The outcome of evaluating one effective gate against one targeted AC
+  fields:
+  - name: ac_hash
+    type: string
+    description: Which AC this result belongs to
+    required: true
+  - name: passed
+    type: boolean
+    description: Final binary outcome after any consensus resolution
+    required: true
+  - name: score
+    type: number
+    description: Rubric or semantic score in [0,1]
+    required: true
+  - name: uncertainty
+    type: number
+    description: Judge uncertainty - values above 0.3 require consensus resolution
+      before the result is final
+    required: true
+  - name: consensus_applied
+    type: boolean
+    description: Whether Stage 3 multi-model consensus re-verification was applied
+    required: true
+- name: ClosureDecision
+  description: The deterministic close-or-continue verdict computed from all final
+    gate results after any required consensus has resolved
+  fields:
+  - name: gate_results
+    type: array
+    description: Final per-AC GateResult list (all uncertainty-triggered consensus
+      already resolved)
+    required: true
+  - name: policy
+    type: object
+    description: The applied GateResolutionPolicy snapshot
+    required: true
+  - name: decision
+    type: string
+    description: close or continue - consensus is an internal resolution step, never
+      a terminal decision state
+    required: true
+evaluation_principles:
+- name: LoopClosureAuthority
+  description: Gates are valid only if they can decide whether the work loop may close
+  weight: 0.25
+- name: BackwardDesignAlignment
+  description: Derived gates should translate intended outcomes into observable evidence
+    and judgment criteria
+  weight: 0.2
+- name: Compatibility
+  description: Existing Seed YAML and downstream string-based AC assumptions must
+    keep working
+  weight: 0.2
+- name: Determinism
+  description: Gate storage, merge precedence, and content-hash invalidation should
+    make outcomes reproducible
+  weight: 0.15
+- name: QualitativeJudgmentValidity
+  description: Rubric and LLM-judge gates must be calibrated against known pass and
+    fail examples
+  weight: 0.2
+exit_conditions:
+- name: GateDerivationComplete
+  description: Workflow may stop once every targeted AC has an effective gate
+  criteria: All targeted ACs have valid effective gate metadata from override, derivation,
+    or defaults
+- name: CalibrationValidated
+  description: Workflow may stop once generated gates correctly distinguish known
+    passing and failing examples
+  criteria: Calibration pairs pass for each derived qualitative gate
+- name: LoopClosureDecisionAvailable
+  description: Every evaluation run emits a deterministic close or continue decision
+    after any required consensus re-verification resolves
+  criteria: A close-or-continue decision is produced for both passing and failing
+    closure-policy cases, with all uncertainty-triggered consensus resolved first
+- name: CompatibilityPreserved
+  description: Workflow may stop once existing string Seed files and downstream consumers
+    remain valid
+  criteria: No forced AC object migration is required and existing Seed parsing assumptions
+    hold
+metadata:
+  seed_id: seed_c2c2636e07a7
+  version: 1.0.0
+  created_at: '2026-07-02T12:12:45.375735Z'
+  ambiguity_score: 0.197
+  interview_id: interview_20260702_113447
+  parent_seed_id: null
+  generation_mode: normal
+  degraded: false
+  unresolved_slots: []
+  recovery_reason: null
