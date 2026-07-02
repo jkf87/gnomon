@@ -1,4 +1,5 @@
 # @jkf87/gnomon-gates
+**English** | [한국어](README.ko.md)
 
 **Gnomon의 TypeScript 게이트 엔진 — Backward Design evaluation gates for agent loops.**
 

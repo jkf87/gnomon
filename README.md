@@ -252,6 +252,11 @@ gnomon report <run-id>  # 최종 리포트 확인
 | `ui_gate` | 디자인 | 대비비, 여백, 접근성 |
 | `video_gate` | 유튜브/쇼츠 | 자막 WER, 오디오 LUFS, 화면비, 챕터 밀도 |
 
+### 게이트 엔진 (TypeScript) — `packages/gates`
+
+문자열 AC에서 판정 가능한 평가 게이트를 도출하고 루프 종료(close/continue)를 결정론적으로 판정하는 독립 엔진. 정성 AC는 루브릭 LLM-judge 게이트로, 불확실성이 높으면 다중 판정자 합의로 — 사람 검수 없이. 위 Python 하네스의 Backward Design 짝이다. [한국어 문서](packages/gates/README.ko.md) 참고.
+
+
 ---
 
 ## License
