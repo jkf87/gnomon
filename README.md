@@ -6,7 +6,7 @@
 
 **Gnomon** — the needle of a sundial. When sunlight hits, the shadow becomes the answer.
 
-Rubric-first evaluation harness for OpenClaw. Define what "good" looks like before writing a single line.
+Rubric-first evaluation harness for AI agent loops — OpenClaw integration included, but the ideas and the gate engine work with any agent (Claude Code, Codex, or your own loop). Define what "good" looks like before writing a single line.
 
 ---
 
@@ -174,7 +174,7 @@ pytest tests/ -v          # 63 tests
 
 **노몬(gnomon)** — 해시계의 바늘. 태양 빛이 닿는 순간 그림자가 정답이 된다.
 
-루브릭-퍼스트 방식의 OpenClaw 평가 하네스. 한 줄도 쓰기 전에 "좋다"의 기준을 먼저 정의한다.
+루브릭-퍼스트 방식의 AI 에이전트 평가 하네스. OpenClaw 연동이 기본 포함이지만, 개념과 게이트 엔진은 어떤 에이전트 루프(클로드 코드, 코덱스, 자작 루프)에서도 쓸 수 있다. 한 줄도 쓰기 전에 "좋다"의 기준을 먼저 정의한다.
 
 ### 노몬이 뭔가요?
 
