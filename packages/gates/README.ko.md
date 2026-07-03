@@ -2,43 +2,147 @@
 
 [English](README.md) | **한국어**
 
-**노몬의 TypeScript 게이트 엔진 — 에이전트 루프를 위한 Backward Design 평가 게이트.**
+**AI가 한 일을 채점해서, "이제 끝내도 좋다"를 대신 판정해 주는 도구입니다.**
 
-gnomon-gates는 평문 acceptance criteria(AC)에서 *판정 가능한* 평가 게이트를 도출하고, 사람 검수 없이 루프를 **닫을지(close)** **계속 돌릴지(continue)** 결정론적으로 판정한다.
+---
 
-핵심 아이디어는 교육학에서 왔다. [Backward Design](https://en.wikipedia.org/wiki/Backward_design)은 말한다 — 수업을 설계하기 전에 *수용 가능한 증거*부터 정의하라. gnomon-gates는 이걸 에이전트 루프에 적용한다: 모든 AC가 관측 가능한 pass/fail 조건, 증거 명세, calibration pair를 가진 게이트를 얻는다. "루프가 끝났다"가 감이 아니라 계산 가능한 판정이 된다.
+## 어떤 문제를 풀어주나요?
 
-## 왜 필요한가
+요즘은 AI(인공지능)에게 일을 시킬 수 있습니다. "홈페이지 만들어 줘" 하면 AI가 코드를 쓰고, 고치고, 또 고치면서 계속 일합니다. 이렇게 AI가 **일을 반복하는 것을 "루프(loop)"** 라고 부릅니다.
 
-에이전트 루프(Ralph 루프, 오토파일럿, 진화형 러너)는 전부 같은 난제를 공유한다: **루프는 언제 멈춰도 되는가?** "사용자가 주요 과업을 막힘없이 완료한다" 같은 정성 기준은 루프를 영원히 막거나, 대충 통과된다. gnomon-gates의 답:
+그런데 여기서 어려운 질문이 하나 생깁니다.
 
-- **정성 AC는 루브릭 게이트가 된다** — LLM-judge가 `ac_compliance` + `score ∈ [0,1]`를 반환한다. 교육 평가의 루브릭 기법 그대로.
-- **게이트의 유효성은 구조가 아니라 행동이다**: 모든 게이트는 calibration pair(알려진 합격 예시 1개 + 불합격 예시 1개)를 갖는다. 판별하지 못하는 게이트는 스키마가 아무리 완비돼도 무효다.
-- **혼합 종료 정책**: `critical` 게이트는 전부 통과해야 하고, 비(非)critical 통과율은 임계값을 넘어야 한다. 정성 게이트 하나가 루프를 인질로 잡을 수도, 실패한 critical 게이트가 묻힐 수도 없다.
-- **높은 불확실성은 사람이 아니라 합의로 푼다**: `uncertainty > 0.3`이면 Stage-3 다중 판정자 합의(다수결 + 점수 평균)를 거쳐야 결과가 확정된다. `human_review_required`는 타입 수준에서 `false`다 — 설계 의도다.
-- **content-hash 무효화**: AC 문구를 고치면 저장된 도출 게이트가 무효화되고 재도출이 강제된다. 같은 시드 + 같은 오버라이드 ⇒ 언제나 같은 게이트.
+> **"AI야, 그래서... 언제까지 할 거야? 이거 다 된 거 맞아?"**
 
-## 설치
+사람이 옆에 붙어서 매번 검사해 주면 되지만, 그러면 자동화의 의미가 없죠. 그렇다고 AI에게 "다 됐어?"라고 물어보면 항상 "네! 완벽합니다!"라고 대답합니다. (AI는 자기가 한 일에 후한 편이거든요.)
+
+**gnomon-gates는 이 판정을 대신해 줍니다.** 시험 채점하듯 기준표를 만들어서, AI가 한 일이 기준을 통과하면 "끝!"(close), 통과하지 못하면 "다시!"(continue)라고 알려줍니다.
+
+## 이름이 왜 '그노몬'인가요?
+
+**그노몬(gnomon)** 은 해시계의 바늘입니다. 해시계에 꽂힌 막대기가 그림자를 드리우면, 그 그림자가 곧 시간이 되죠. 사람이 "지금 몇 시쯤 됐나~" 하고 감으로 정하는 게 아니라, **기준(태양)에 비춰서 답이 저절로 나오는 것** — 인류 최초의 자동 측정 도구입니다.
+
+이 도구도 똑같습니다. 사람의 감이 아니라 **미리 정한 기준**에 비춰서 "끝났다/안 끝났다"가 저절로 나옵니다.
+
+## 핵심 아이디어: 채점 기준표를 먼저 만든다
+
+학교에서 선생님이 글짓기 숙제를 채점할 때를 떠올려 보세요. 좋은 선생님은 채점하기 전에 **채점 기준표(루브릭)** 를 먼저 만듭니다.
+
+> - 맞춤법이 정확한가? (10점)
+> - 주제가 분명한가? (30점)
+> - 근거를 들었는가? (30점)
+> ...
+
+이렇게 하면 누가 채점해도 비슷한 점수가 나오고, 학생도 뭘 해야 할지 압니다.
+
+교육학에서는 이걸 **Backward Design(백워드 설계)** 이라고 합니다. "수업부터 하고 나중에 채점 기준을 정하는" 게 아니라, **"어떤 증거를 보면 합격인지"를 먼저 정하고 수업을 설계**하는 방법이죠.
+
+gnomon-gates는 이 방법을 AI의 일에 적용합니다:
+
+1. 할 일 목록(예: "기존 파일이 깨지지 않아야 한다")을 받아서
+2. 각 항목마다 **게이트(gate, 관문)** 를 자동으로 만듭니다. 게이트 하나에는 이런 게 들어 있습니다:
+   - **통과 조건** — 무엇이 확인되면 합격인지 (예: "테스트가 전부 통과한다")
+   - **증거** — 뭘 보고 판단할지 (예: "테스트 실행 결과")
+   - **검증 예시 한 쌍** — "이런 건 합격, 이런 건 불합격"이라는 견본. 채점기가 정답과 오답을 제대로 구분하는지 미리 확인해 두는 용도예요.
+3. AI가 일을 마치면 게이트마다 채점하고, **전체 판정**을 내립니다: 끝(close) 또는 다시(continue).
+
+## "느낌"도 채점이 되나요?
+
+됩니다. 이게 이 도구의 특기입니다.
+
+"버튼 색이 파란색이다" 같은 건 기계로 확인하기 쉽습니다. 그런데 **"사용자가 쓰기 편해야 한다"** 같은 건요? 이런 건 정답이 딱 떨어지지 않죠.
+
+gnomon-gates는 이런 항목을 **루브릭 채점 방식**으로 바꿉니다. 글짓기를 기준표로 채점하듯, AI 심판에게 기준표를 주고 채점시키는 거예요. 심판은 두 가지를 돌려줍니다:
+
+- **합격 여부** — 기준에 맞나? (예/아니오)
+- **점수** — 0점~1점 사이
+
+둘 다 만족해야 통과입니다. **합격 여부가 "예"이면서, 점수도 0.8점 이상**이어야 해요. 점수만 높다고 되는 게 아닙니다.
+
+그런데 심판이 **"음... 잘 모르겠는데"** 라고 하면(스스로 밝힌 불확실성이 높으면)? 사람을 부르지 않습니다. 대신 **심판 여러 명을 더 불러옵니다.** 체조나 피겨 스케이팅 경기에서 심판 한 명이 아니라 여러 명이 각자 점수를 매긴 뒤 합치는 것과 같아요. 규칙은 이렇습니다:
+
+- **합격 여부**는 심판들의 **다수결**로 정하고,
+- **최종 점수**는 심판들 점수의 **평균**으로 정합니다.
+
+이래도 끝까지 사람은 안 나섭니다. 사람 없이 자동으로 굴러가는 게 이 도구의 목표거든요.
+
+## 최종 판정은 어떻게 하나요?
+
+시험 과목에도 "필수 과목"과 "선택 과목"이 있듯이, 게이트에도 두 종류가 있습니다:
+
+| 종류 | 규칙 |
+|---|---|
+| **필수 게이트** (critical) | **하나라도 떨어지면 무조건 "다시!"** |
+| 일반 게이트 | 10개 중 8개(80%) 이상 통과하면 OK |
+
+왜 이렇게 하냐면요:
+
+- 전부 다 통과해야만 끝난다고 하면 → 애매한 항목 하나 때문에 **영원히 안 끝날 수** 있고,
+- 점수 평균만 보면 → 정말 중요한 항목이 떨어졌는데도 **대충 넘어갈 수** 있거든요.
+
+그래서 둘을 섞었습니다. 중요한 건 반드시, 나머지는 충분히.
+
+## 한 가지 더: 몰래 바꾸기 방지
+
+할 일 목록의 문장을 고치면 어떻게 될까요? 예를 들어 "테스트 100개 통과"를 "테스트 10개 통과"로 슬쩍 바꾼다면?
+
+gnomon-gates는 각 항목의 **지문(content-hash)** 을 기억합니다. 여기서 지문은 **손가락 지문**을 말해요. 사람마다 손가락 지문이 다르듯, 문장마다 고유한 지문이 있습니다. 공백 정리 같은 사소한 것만 빼고 내용이 조금이라도 바뀌면 지문도 달라져요.
+
+문장이 바뀌면 이런 일이 일어납니다: **이전 문장으로 만들어 둔 게이트는 새 문장과 지문이 안 맞아서 더 이상 쓰이지 않습니다.** 새 문장에는 새 게이트가 적용돼요 — 새로 자동 생성하거나, 그 전까지는 기본 게이트가 대신 들어갑니다. 어느 쪽이든 **바꾼 문장이 예전 채점 결과를 슬쩍 물려받는 일은 없습니다.** 같은 입력에는 언제나 같은 게이트 — 몰래 기준을 낮출 수 없어요.
+
+## 이 도구는 어떻게 만들어졌나요?
+
+재미있는 사실: 이 도구 자체가 **AI 자동화 루프로 만들어졌습니다.** [Ouroboros(우로보로스)](https://github.com/Q00/ouroboros)라는 도구로 요구사항 인터뷰 → 설계도(시드) 작성 → AI 자동 개발 → 3단계 검증(기계 검사 → AI 채점 → 확신 없으면 다수결)을 거쳤고, 최종 판정은 **합격(APPROVED)** 이었습니다.
+
+이 도구를 만들 때 쓴 설계도가 [`seeds/backward-design-gates.seed.yaml`](seeds/backward-design-gates.seed.yaml)에 그대로 들어 있습니다. 그리고 이 도구의 테스트가 바로 그 설계도를 채점합니다. **자기를 만든 설계도를 자기가 채점하는 것** — 우로보로스(제 꼬리를 무는 뱀)라는 이름 그대로죠.
+
+## 용어 사전
+
+| 용어 | 쉬운 설명 |
+|---|---|
+| 루프(loop) | AI가 일을 반복하는 것. "하고, 검사하고, 고치고"의 반복 |
+| AC (acceptance criteria) | 할 일 목록이자 합격 조건. "이게 되면 완성" 목록 |
+| 게이트(gate) | 관문. AC 하나를 채점 가능한 형태로 바꾼 것 |
+| 루브릭(rubric) | 채점 기준표. 애매한 것도 채점할 수 있게 해줌 |
+| LLM-judge | 채점을 맡은 AI 심판. LLM은 "대규모 언어 모델" — 챗GPT 같은 AI를 말함 |
+| critical | 필수 항목 표시. 떨어지면 무조건 재작업 |
+| calibration pair | 채점기 검증용 견본 한 쌍 (합격 예시 + 불합격 예시) |
+| content-hash | 문장의 지문. 손가락 지문처럼 문장마다 고유함 |
+| uncertainty | 심판이 스스로 밝힌 불확실성. 높으면 "잘 모르겠다"는 뜻 |
+| close / continue | 최종 판정. 끝내도 됨 / 더 해야 함 |
+
+---
+
+## 여기서부터는 개발자용 안내입니다
+
+(개발 지식이 없다면 여기서 읽기를 마쳐도 좋습니다. 위 내용이 이 도구의 전부입니다.)
+
+### 설치
 
 ```bash
 npm install @jkf87/gnomon-gates
 ```
 
-## 빠른 시작
+### 빠른 시작
 
 ```js
 import { materializeEffectiveEvaluationGates, evaluateLoopClosure } from '@jkf87/gnomon-gates';
 import { readFileSync } from 'node:fs';
 
-// 1. 시드의 평문 AC에서 게이트를 도출한다
+// 1단계. 할 일 목록(YAML 파일의 acceptance_criteria)에서 게이트를 자동으로 만든다
 const seedYaml = readFileSync('seeds/backward-design-gates.seed.yaml', 'utf8');
 const { effectiveGates, defaults } = materializeEffectiveEvaluationGates(seedYaml);
-// -> AC마다 게이트 1개: {ac_hash, condition[], evidence, calibration, critical, verification_method, source}
+// 항목마다 게이트 1개가 나온다:
+// {ac_hash(지문), condition(통과 조건), evidence(증거), calibration(검증 예시 쌍),
+//  critical(필수 여부), verification_method(채점 방식), source(게이트 출처)}
 
-// 2. 판정 결과를 넣으면 close/continue 결정이 나온다
+// 2단계. 채점 결과를 넣으면 최종 판정이 나온다
 const attempts = {
+  // 확신 있는 채점 결과 (uncertainty가 0.3 이하면 그대로 확정)
   [effectiveGates[0].ac_hash]: { stage2: { ac_compliance: true, score: 0.93, uncertainty: 0.12 } },
-  // 불확실성 높은 루브릭 게이트는 Stage-3 합의 표를 가져와야 한다:
+
+  // 심판의 불확실성이 높은 경우(uncertainty > 0.3): 심판 여러 명의 표를 함께 내야 한다
+  // 합격 여부는 다수결(여기서는 2:1로 합격), 최종 점수는 평균
   [effectiveGates[1].ac_hash]: {
     stage2: { ac_compliance: true, score: 0.85, uncertainty: 0.62 },
     stage3_consensus: [
@@ -46,44 +150,52 @@ const attempts = {
       { ac_compliance: true,  score: 0.84, uncertainty: 0.20 },
       { ac_compliance: false, score: 0.55, uncertainty: 0.30 },
     ],
+    // 참고: 이 예시의 평균 점수는 (0.90+0.84+0.55)/3 ≈ 0.76으로 0.8에 못 미친다.
+    // 다수결로 합격 여부는 "예"가 됐어도 점수 조건에서 떨어지므로 이 게이트는 불합격 —
+    // "합격 여부 AND 점수" 두 조건을 모두 만족해야 한다는 규칙을 보여주는 예시다.
   },
-  // ...게이트마다 attempt 1개 — 빠지면 throw (판정 안 된 AC는 절대 통과 못 한다)
+  // 주의: 게이트마다 채점 결과가 하나씩 꼭 있어야 한다.
+  // (참조한 시드에는 항목이 6개이므로, 실제로 실행하려면 6개 모두 채점 결과를 넣거나
+  //  evaluateLoopClosure(effectiveGates.slice(0, 2), ...)처럼 게이트를 잘라서 호출한다.)
+  // 빠뜨리면 에러가 난다 — 채점 안 된 항목이 몰래 통과하는 일은 없다.
 };
 
 const result = evaluateLoopClosure(effectiveGates, attempts, defaults);
-// result.decision           -> 'close' | 'continue'
-// result.critical_failures  -> 실패한 critical 게이트의 해시 목록
-// result.noncritical_pass_ratio
+// result.decision                -> 'close'(끝) 또는 'continue'(다시)
+// result.critical_failures      -> 떨어진 필수 게이트 목록
+// result.noncritical_pass_ratio -> 일반 게이트 통과 비율
 ```
 
-## 게이트 해석 규칙
+### 게이트가 겹치면? — 우선순위 규칙
 
-AC별 effective 게이트는 고정된 우선순위로 병합된다:
+같은 항목에 게이트가 여러 개 있으면 이 순서로 하나를 고릅니다:
 
 ```
-override (사용자 작성) > derived (Backward Design 도출) > default (상속 정책)
+사용자가 직접 쓴 것(override) > 자동으로 만든 것(derived) > 기본값(default)
 ```
 
-기본값은 고정·동결이다: `satisfaction_threshold: 0.8`, `uncertainty_trigger: 0.3`, `noncritical_pass_ratio: 0.8`.
+기본 설정값은 고정되어 있습니다:
 
-## API
+| 설정 | 값 | 뜻 |
+|---|---|---|
+| `satisfaction_threshold` | 0.8 | 항목별 합격점. 합격 여부(ac_compliance)가 true이면서 점수도 이 값 이상이어야 통과 |
+| `uncertainty_trigger` | 0.3 | 심판이 밝힌 불확실성(uncertainty)이 이 값을 **넘으면** 다수결 발동 |
+| `noncritical_pass_ratio` | 0.8 | 일반 게이트는 80% 이상 통과해야 함 |
 
-| Export | 하는 일 |
+### API
+
+| 함수/타입 | 하는 일 |
 |---|---|
-| `materializeEffectiveEvaluationGates(seedYaml, options?)` | YAML 최상위 `acceptance_criteria` 문자열 목록을 파싱하고, AC마다 게이트 1개를 도출(content-hash 키), override > derived > default 병합 |
-| `evaluateLoopClosure(gates, attemptsByHash, defaults)` | 결정론적 close/continue 판정: 미판정 게이트에 throw, 합의 해소, critical 실패 + 비critical 비율 계산 |
-| `EvaluationGate`, `EvaluatedGateResult`, `LoopClosureResult`, `GateResolutionPolicy` 타입 | 게이트 온톨로지 전체 |
+| `materializeEffectiveEvaluationGates(seedYaml, options?)` | YAML의 `acceptance_criteria` 목록을 읽어 항목마다 게이트 1개를 만들고, 우선순위 규칙으로 최종 게이트를 고른다 |
+| `evaluateLoopClosure(gates, attemptsByHash, defaults)` | 채점 결과를 모아 close/continue를 판정한다. 채점 누락 시 에러, 다수결 자동 처리, 필수 실패와 통과 비율 계산 |
+| `EvaluationGate`, `EvaluatedGateResult`, `LoopClosureResult`, `EvaluationGateDefaults` | 게이트 관련 타입 정의 전체 |
 
-## 테스트
+### 테스트
 
 ```bash
-npm test   # 빌드 후 node --test — 12개 테스트
+npm test   # 빌드 후 테스트 12개 실행
 ```
-
-## 계보 (Provenance)
-
-이 라이브러리는 [Ouroboros](https://github.com/Q00/ouroboros) 풀 루프로 명세되고 만들어졌다 — 소크라테스 인터뷰(모호도 0.55 → 0.20) → QA 정제 시드(0.92, 적대적 페르소나 검증 3회) → 자율 실행(6/6 AC) → 3단계 형식 검증(**APPROVED**, Stage-2 0.82). 이 라이브러리를 명세한 시드가 [`seeds/backward-design-gates.seed.yaml`](seeds/backward-design-gates.seed.yaml)에 들어 있고, 라이브러리 자신의 테스트가 그 시드를 판정한다. 뱀이 제 꼬리를 문다.
 
 ## 라이선스
 
-MIT
+MIT — 자유롭게 쓰고, 고치고, 나눠 쓸 수 있습니다.

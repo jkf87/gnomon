@@ -71,7 +71,7 @@ Defaults are pinned and snapshot-frozen: `satisfaction_threshold: 0.8`, `uncerta
 |---|---|
 | `materializeEffectiveEvaluationGates(seedYaml, options?)` | Parses top-level `acceptance_criteria` string list from YAML, derives one gate per AC (content-hash keyed), applies override > derived > default |
 | `evaluateLoopClosure(gates, attemptsByHash, defaults)` | Deterministic close-or-continue: throws on unjudged gates, resolves consensus, computes critical failures + non-critical ratio |
-| `EvaluationGate`, `EvaluatedGateResult`, `LoopClosureResult`, `GateResolutionPolicy` types | The full gate ontology |
+| `EvaluationGate`, `EvaluatedGateResult`, `LoopClosureResult`, `EvaluationGateDefaults` types | The full gate ontology |
 
 ## Test
 
